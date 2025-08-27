@@ -82,7 +82,7 @@ Please download the `RadarSimulink.slx` file under "Project Items"
    - Combined comparison for in-depth analysis
 
 **Educational and Insightful**  
-  - Offers a clear and practical demonstration of Kalman filtering—great for radar tracking, navigation systems, and sensor fusion beginners.
+  - Offers a clear and practical demonstration of Kalman filtering—great for radar tracking and navigation systems for beginners.
  
 # Requirments
 - MATLAB R2024a (This is what I used)
