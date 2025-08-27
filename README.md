@@ -49,10 +49,10 @@ Please download the "RadarTracker.m" file under "Project Items"
 - Collects state estimates from MATLAB’s implementation.
   
 **7. Results and Visualization**
-- Plots and visual comparison of true position vs. noisy measurements
-- Raw radar measurements.
-- Manual Kalman filter estimates.
-- MATLAB Kalman filter estimates.
+- Plots and compares:
+   - Raw radar measurements.
+   - Manual Kalman filter estimates.
+   - MATLAB Kalman filter estimates.
 - Shows how the Kalman Filter smooths noisy measurements and accurately reconstructs the target’s trajectory.
   
 # Key Features
