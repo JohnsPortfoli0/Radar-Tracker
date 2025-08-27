@@ -45,7 +45,7 @@ Please download the "RadarTracker.m" file under "Project Items"
 - Stores results for comparison with MATLAB’s filter.
   
 **6. MATLAB Kalman Filter Simulation** 
-- Uses lsim() to simulate the built-in Kalman filter on radar data.
+- Uses `lsim()` to simulate the built-in Kalman filter on radar data.
 - Collects state estimates from MATLAB’s implementation.
   
 **7. Results and Visualization**
