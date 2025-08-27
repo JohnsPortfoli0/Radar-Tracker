@@ -2,9 +2,9 @@
 This project implements a radar signal filtering and tracking system designed to estimate the true state of a moving target in the presence of noise. The tracker is built in MATLAB and Simulink and utilizes a Kalman filter to smooth noisy radar measurements, predict future positions, and improve accuracy compared to raw sensor data.
 
 # Steps for Running the Script Properly
-Please download the "RadarTracker.m" file under "Project Items"
+Please download the `RadarTracker.m` file under "Project Items"
 
-1. Open "RadarTracker.m" in MATLAB
+1. Open `RadarTracker.m` in MATLAB
    
 2. Run the script and observe the plots
    
@@ -14,7 +14,7 @@ Please download the "RadarTracker.m" file under "Project Items"
 
 # Script Explanation and Flow
 **1. Data Initialization**
-- Defines the sampling interval (dt), simulation time vector, and target parameters (initial position, constant velocity).
+- Defines the sampling interval `(dt)`, simulation time vector, and target parameters (initial position, constant velocity).
 - Adds measurement noise to simulate radar readings (radar_measurements)
   
 **2. Motion and Measurements**
@@ -24,21 +24,21 @@ Please download the "RadarTracker.m" file under "Project Items"
   
 **3. State-Space Model**
 - Defines a state transition model for position and velocity:
-   - Matrix A updates position and velocity over time.
-   - Matrix C indicates only position is measured.
+   - Matrix `A` updates position and velocity over time.
+   - Matrix `C` indicates only position is measured.
 - Defines noise covariance matrices:
-   - Q for process noise (uncertainty in dynamics).
-   - R for measurement noise (uncertainty in sensor).
+   - `Q` for process noise (uncertainty in dynamics).
+   - `R` for measurement noise (uncertainty in sensor).
   
 **4. Kalman Filter Setup**
-- Creates a state-space system in MATLAB with ss().
-- Calls the built-in kalman() function to design a Kalman filter and obtain:
-- kalmf: the Kalman filter system.
-- L: Kalman gain.
-- P: steady-state error covariance.
+- Creates a state-space system in MATLAB with `ss()`.
+- Calls the built-in `kalman()` function to design a Kalman filter and obtain:
+- `kalmf`: the Kalman filter system.
+- `L`: Kalman gain.
+- `P`: steady-state error covariance.
   
 **5. Manual Kalman Filter Implementation**
-- Initializes state estimates (X_est) with position and velocity and covariance estimate (P_est).
+- Initializes state estimates `X_est` with position and velocity and covariance estimate `P_est`.
 - Runs a prediction-correction loop:
 - Correction step: Updates the estimate using measurement and Kalman gain.
 - Prediction step: Projects the state and covariance forward in time.
