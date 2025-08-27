@@ -2,7 +2,14 @@
 This project implements a radar signal filtering and tracking system designed to estimate the true state of a moving target in the presence of noise. The tracker is built in MATLAB and Simulink and utilizes a Kalman filter to smooth noisy radar measurements, predict future positions, and improve accuracy compared to raw sensor data.
 
 # Steps for Running the Script Properly
-Please download the "PlateReader.m" and "test_plate.jpg" under "Project Items".
+Please download the "RadarTracker.m" file under "Project Items"
+
+1. Open "RadarTracker.m" in MATLAB
+2. Run the script and observe the plots
+   Figure 1: Plots the true position and velocity of the target as well as the noisy measurements
+   Figure 2: Shows a manual Kalman filter vs. MATLABs Kalman filter command
+   Figure 3: Shows combination Figure 1 and 2
+3.
 
 1. Begin here
 
