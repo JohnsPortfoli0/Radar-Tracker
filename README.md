@@ -14,7 +14,7 @@ Please download the `RadarTracker.m` file under "Project Items"
 
 # Script Explanation and Flow
 **1. Data Initialization**
-- Defines the sampling interval `(dt)`, simulation time vector, and target parameters (initial position, constant velocity).
+- Defines the sampling interval, simulation time vector, and target parameters (initial position, constant velocity).
 - Adds measurement noise to simulate radar readings (radar_measurements)
   
 **2. Motion and Measurements**
@@ -56,7 +56,13 @@ Please download the `RadarTracker.m` file under "Project Items"
 - Shows how the Kalman Filter smooths noisy measurements and accurately reconstructs the target’s trajectory.
   
 # Key Features
-- Begin here
+- Models a target moving at a constant velocity of 20 m/s with noisy radar measurements.
+- Adds Gaussian noise to simulate realistic sensor errors.
+- Defines system dynamics with transition, measurement, and covariance matrices.
+- Manual filter loop (prediction + correction).
+- MATLAB’s built-in kalman() function.
+- Plots true position, noisy radar measurements, and estimates from both Kalman filters.
+- Provides a fundamental demonstration of how Kalman Filters extract useful state estimates from noisy data.
  
 # Requirments
 - MATLAB R2024a (This is what I used)
