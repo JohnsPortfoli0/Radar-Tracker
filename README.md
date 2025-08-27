@@ -40,8 +40,8 @@ Please download the `RadarTracker.m` file under "Project Items"
 **5. Manual Kalman Filter Implementation**
 - Initializes state estimates `X_est` with position and velocity and covariance estimate `P_est`.
 - Runs a prediction-correction loop:
-- Correction step: Updates the estimate using measurement and Kalman gain.
-- Prediction step: Projects the state and covariance forward in time.
+   - Correction step: Updates the estimate using measurement and Kalman gain.
+   - Prediction step: Projects the state and covariance forward in time.
 - Stores results for comparison with MATLAB’s filter.
   
 **6. MATLAB Kalman Filter Simulation** 
