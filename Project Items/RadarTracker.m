@@ -124,7 +124,7 @@ plot(t, true_position, 'g-', ...
 legend('True Position', 'Manual Kalman Filter Estimate', 'MATLAB Estimate', 'location', 'northwest');
 xlabel('Time (s)');
 ylabel('Position (m)');
-title('Manaual vs. MATLAB Kalman Filter');
+title('Manual vs. MATLAB Kalman Filter');
 grid on;
 
 
@@ -139,3 +139,4 @@ xlabel('Time (s)');
 ylabel('Position (m)');
 title('Radar Target Tracking using Kalman Filter');
 grid on;
+
