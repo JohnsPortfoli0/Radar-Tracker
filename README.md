@@ -65,13 +65,24 @@ Please download the `RadarSimulink.slx` file under "Project Items"
 - Shows how the Kalman Filter smooths noisy measurements and accurately reconstructs the target’s trajectory.
   
 # Key Features
-- Models a target moving at a constant velocity of 20 m/s with noisy radar measurements.
-- Adds Gaussian noise to simulate realistic sensor errors.
-- Defines system dynamics with transition, measurement, and covariance matrices.
-- Manual filter loop (prediction + correction).
-- MATLAB’s built-in kalman() function.
-- Plots true position, noisy radar measurements, and estimates from both Kalman filters.
-- Provides a fundamental demonstration of how Kalman Filters extract useful state estimates from noisy data.
+
+**Simulated Radar Noise**  
+  - Models a moving target (20 m/s) under radar measurement noise to mimic real-world tracking scenarios.
+
+**Dual Kalman Filter Implementations**  
+  - Includes both a **manual filter loop** (prediction + correction) and **MATLAB’s built-in `kalman()` function**, showcasing hands-on and built-in approaches.
+
+**State-Space Modeling**  
+  - Defines essential state-transition and measurement matrices (`A`, `C`, etc.), plus process and measurement noise covariances (`Q`, `R`).
+
+**Visual Results Comparison**  
+  - Generates three key plots:  
+  1. True vs. noisy radar measurements  
+  2. Manual vs. MATLAB Kalman filter estimates  
+  3. Combined comparison for in-depth analysis
+
+**Educational and Insightful**  
+  - Offers a clear and practical demonstration of Kalman filtering—great for radar tracking, navigation systems, and sensor fusion beginners.
  
 # Requirments
 - MATLAB R2024a (This is what I used)
