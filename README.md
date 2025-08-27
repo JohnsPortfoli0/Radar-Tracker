@@ -13,24 +13,24 @@ Please download the "RadarTracker.m" file under "Project Items"
    Figure 3: Shows combination Figure 1 and 2  
 
 # Script Explanation and Flow
-1. Data Initialization
+**1. Data Initialization**
 - Defines the sampling interval (dt), simulation time vector, and target parameters (initial position, constant velocity).
 - Adds measurement noise to simulate radar readings (radar_measurements)
   
-2. Motion and Measurements
+**2. Motion and Measurements**
 - Generates the true position of the target using a simple linear motion equation
 - Produces noisy measurements by adding Gaussian noise to the true trajectory.
 - Plots true vs. measured positions to visualize sensor error.
   
-3. State-Space Model
-- Defines a state transition model for position and velocity:
+**3. State-Space Model**
+**- Defines a state transition model for position and velocity:**
    - Matrix A updates position and velocity over time.
    - Matrix C indicates only position is measured.
-- Defines noise covariance matrices:
+**- Defines noise covariance matrices:**
    - Q for process noise (uncertainty in dynamics).
    - R for measurement noise (uncertainty in sensor).
   
-4. Kalman Filter Setup
+**4. Kalman Filter Setup**
 - Creates a state-space system in MATLAB with ss().
 - Calls the built-in kalman() function to design a Kalman filter and obtain:
 - kalmf: the Kalman filter system.
