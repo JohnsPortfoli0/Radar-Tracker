@@ -5,13 +5,15 @@ This project implements a radar signal filtering and tracking system designed to
 Please download the "RadarTracker.m" file under "Project Items"
 
 1. Open "RadarTracker.m" in MATLAB
+   
 2. Run the script and observe the plots
+   
    Figure 1: Plots the true position and velocity of the target as well as the noisy measurements
    Figure 2: Shows a manual Kalman filter vs. MATLABs Kalman filter command
    Figure 3: Shows combination Figure 1 and 2
+   
 3.
 
-1. Begin here
 
 # Script Explanation and Flow
 1. Begin here
