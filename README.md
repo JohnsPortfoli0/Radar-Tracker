@@ -8,7 +8,7 @@ Please download the "RadarTracker.m" file under "Project Items"
    
 2. Run the script and observe the plots
    
-   Figure 1: Plots the true position and velocity of the target as well as the noisy measurements  
+   Figure 1: Plots the true position of the target as well as the noisy measurements  
    Figure 2: Shows a manual Kalman filter vs. MATLABs Kalman filter command  
    Figure 3: Shows combination Figure 1 and 2  
 
