@@ -13,8 +13,48 @@ Please download the "RadarTracker.m" file under "Project Items"
    Figure 3: Shows combination Figure 1 and 2  
 
 # Script Explanation and Flow
-1. Begin here
-
+1. Data Initialization
+- Defines the sampling interval (dt), simulation time vector, and target parameters (initial position, constant velocity).
+- Adds measurement noise to simulate radar readings (radar_measurements)
+  
+2. Motion and Measurements
+- Generates the true position of the target using a simple linear motion equation
+- Produces noisy measurements by adding Gaussian noise to the true trajectory.
+- Plots true vs. measured positions to visualize sensor error.
+  
+3. State-Space Model
+- Defines a state transition model for position and velocity:
+   - Matrix A updates position and velocity over time.
+   - Matrix C indicates only position is measured.
+- Defines noise covariance matrices:
+   - Q for process noise (uncertainty in dynamics).
+   - R for measurement noise (uncertainty in sensor).
+  
+4. Kalman Filter Setup
+- Creates a state-space system in MATLAB with ss().
+- Calls the built-in kalman() function to design a Kalman filter and obtain:
+- kalmf: the Kalman filter system.
+- L: Kalman gain.
+- P: steady-state error covariance.
+  
+5. Manual Kalman Filter Implementation
+Initializes:
+State estimates (X_est) with position and velocity.
+Covariance estimate (P_est).
+Runs a prediction-correction loop:
+Correction step: Updates the estimate using measurement and Kalman gain.
+Prediction step: Projects the state and covariance forward in time.
+Stores results for comparison with MATLAB’s filter.
+6. MATLAB Kalman Filter Simulation
+Uses lsim() to simulate the built-in Kalman filter on radar data.
+Collects state estimates from MATLAB’s implementation.
+7. Results and Visualization
+Plots and compares:
+True position.
+Raw radar measurements.
+Manual Kalman filter estimates.
+MATLAB Kalman filter estimates.
+Shows how the Kalman Filter smooths noisy measurements and accurately reconstructs the target’s trajectory.
 # Key Features
 - Begin here
  
