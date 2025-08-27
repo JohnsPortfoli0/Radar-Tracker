@@ -15,7 +15,7 @@ Please download the `RadarTracker.m` file under "Project Items"
 # Steps for Running the Simulink Demo
 Please download the `RadarSimulink.slx` file under "Project Items"
 
-1. Open `RadarSimulink.slx` (either open MATLAB and invoke simulink in the command window then open the file, or double click the file to open it).
+1. Open `RadarSimulink.slx` (either open MATLAB and invoke simulink in the command window then open the file, or double click the .slx file to open it).
 2. Run the `RadarTracker.m` in MATLAB (this should resolve the errors on the `Noise Generation` block and the `Control Input` block).
 3. Run `RadarSimulink.slx` in the Simulink window.
 4. After it has run, double click the `scope` to see the plots that were generated.
