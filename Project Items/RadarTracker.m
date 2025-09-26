@@ -16,8 +16,8 @@
 % * Course: ECEN 5830
 
 close all
-clear all
 clc
+clear all
 
 %% Data Section
 dt = 0.25;                        % sampling interval, smaller dt = better filter tracking
@@ -32,16 +32,6 @@ true_position = initial_position + velocity*t;
 
 % simulate radar measurements
 radar_measurements = true_position + mn*randn(size(t));
-
-figure
-plot(t, true_position, 'g-', ...
-     t, radar_measurements, 'rx')
-
-legend('True Position', 'Radar Measurements', 'location', 'northwest');
-xlabel('Time (s)');
-ylabel('Position (m)');
-title('True Position vs. Radar Measurements');
-grid on;
 
 %% State Space Model Definition
 % define state-space model
@@ -78,11 +68,17 @@ R = mn^2;                     % measurement noise covariance (uncertainty in sen
 % independently.
 sys = ss(A, eye(2), C, zeros(1,2), dt); % define system with separate noise inputs
 
-% MATLAB Kalman Filter Command
+%% MATLAB Kalman Filter Command
 [kalmf, L, P] = kalman(sys, Q, R); % MATLAB generated kalman filter, 
 % kalmf = Kalman filter system
 % L = Kalman Gain (NOT DIRECTLY USED)
 % P = Steady-state error covariance
+
+% Simulate kalmf on radar measurements
+[y, time, x_kalmf_estimates] = lsim(kalmf, radar_measurements, t);
+% y = output (NOT DIRECTLY USED)
+% time = same timing vector as 't'
+% x_kalmf_estimates = internal states at each time step
 
 %% Manual Kalman Filter Implementation
 
@@ -110,13 +106,20 @@ for k = 1:length(t)
 end
 
 
-% MATLAB Kalman Filter (kalmf) Simulation
-% Simulate kalmf on radar measurements
-[y, time, x_kalmf_estimates] = lsim(kalmf, radar_measurements, t);
-% y = output (NOT DIRECTLY USED)
-% time = same timing vector as 't'
-% x_kalmf_estimates = internal states at each time step
+%% Plots
 
+% True Position vs. Noisy Measurements
+figure
+plot(t, true_position, 'g-', ...
+     t, radar_measurements, 'rx')
+
+legend('True Position', 'Radar Measurements', 'location', 'northwest');
+xlabel('Time (s)');
+ylabel('Position (m)');
+title('True Position vs. Radar Measurements');
+grid on;
+
+% Kalman Filter Plots Against True Position
 figure;
 plot(t, true_position, 'g-', ...
      t, X_estimates(1,:), 'b--', ...
@@ -127,8 +130,7 @@ ylabel('Position (m)');
 title('Manual vs. MATLAB Kalman Filter');
 grid on;
 
-
-%% Plots
+% Kalman Filters vs. True Position vs. Noisy Measurements
 figure;
 plot(t, true_position, 'g-', ...
      t, radar_measurements, 'rx', ...
@@ -139,4 +141,28 @@ xlabel('Time (s)');
 ylabel('Position (m)');
 title('Radar Target Tracking using Kalman Filter');
 grid on;
+
+%% Kalman Filter Accuracy Checks
+% Extract position estimates
+man_est   = X_estimates(1,:).';        % Manual KF position (Nx1)
+kalmf_est = x_kalmf_estimates(:,1);    % MATLAB kalmf position (Nx1)
+truth     = true_position(:);          % True position (Nx1)
+
+% MAPE: Mean Absolute Percentage Error
+% ACC: Accuracy
+
+% Mask out zero values in truth to avoid divide-by-zero in MAPE
+mask = truth ~= 0;
+
+% Manual KF metrics
+MAPE_manual = mean(abs((man_est(mask) - truth(mask)) ./ truth(mask))) * 100;
+ACC_manual  = 100 - MAPE_manual;
+
+% MATLAB kalmf metrics
+MAPE_kalmf = mean(abs((kalmf_est(mask) - truth(mask)) ./ truth(mask))) * 100;
+ACC_kalmf  = 100 - MAPE_kalmf;
+
+% Print results
+fprintf('Manual Kalman Filter: \nMAPE: %.2f%% \nAccuracy: %.2f%%\n', MAPE_manual, ACC_manual);
+fprintf('\nMATLAB kalmf Command: \nMAPE: %.2f%% \nAccuracy: %.2f%%\n', MAPE_kalmf, ACC_kalmf);
 
