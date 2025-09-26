@@ -63,6 +63,7 @@ Please download the `RadarSimulink.slx` file under "Project Items"
    - Manual Kalman filter estimates.
    - MATLAB Kalman filter estimates.
 - Shows how the Kalman Filter smooths noisy measurements and accurately reconstructs the target’s trajectory.
+- Calculates the MAPE from the position estimates and gives back both filters accuracy as a percentage.
   
 # Key Features
 
@@ -80,6 +81,9 @@ Please download the `RadarSimulink.slx` file under "Project Items"
    - True vs. noisy radar measurements  
    - Manual vs. MATLAB Kalman filter estimates  
    - Combined comparison for in-depth analysis
+
+ ** Accuracy Check**
+ - Checks the accuracy of both Kalman Filter implementations and outputs the results in the Command Window.
 
 **Educational and Insightful**  
   - Offers a clear and practical demonstration of Kalman filtering—great for radar tracking and navigation systems for beginners.
