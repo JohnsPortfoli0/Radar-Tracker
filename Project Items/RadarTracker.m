@@ -31,7 +31,7 @@ mn = 50;           % standard deviation of measurement noise
 true_position = initial_position + velocity*t;
 
 % simulate radar measurements
-radar_measurements = true_position + mn*randn(size(t));
+z = true_position + mn*randn(size(t)); % radar measurement vector
 
 %% State Space Model Definition
 % define state-space model
@@ -50,7 +50,7 @@ C = [1 0];                        % measurement matrix
 
 % value set to '0' because there is no control input directly being passed
 % to the output
-D = 0;                            % direct transmission matrix
+D = 0;                            % direct transmission or feedthrough matrix
 
 % value of '1' denotes there is slight disturbance in pos. and velo.
 % higher variance than '1' = more disturbance
@@ -75,16 +75,15 @@ sys = ss(A, eye(2), C, zeros(1,2), dt); % define system with separate noise inpu
 % P = Steady-state error covariance
 
 % Simulate kalmf on radar measurements
-[y, time, x_kalmf_estimates] = lsim(kalmf, radar_measurements, t);
+[y, time, x_kalmf_estimates] = lsim(kalmf, z, t);
 % y = output (NOT DIRECTLY USED)
 % time = same timing vector as 't'
 % x_kalmf_estimates = internal states at each time step
 
 %% Manual Kalman Filter Implementation
-
 % Initialize state and covariance
-X_est = [0; 20];        % Initial position and velocity (or [0; 20] if you prefer)
-P_est = P;             % Initial covariance estimate
+X_est = [0; 20];        % Initial position and velocity (STATE VECTOR)
+P_est = P;             % Initial covariance estimate, used results from built-in filter to make the comparison fair (STATE COVARIANCE)
 
 % Preallocate for storage
 X_estimates = zeros(2, length(t));
@@ -94,8 +93,8 @@ X_estimates = zeros(2, length(t));
 for k = 1:length(t)
     % Measurement Update (Correction step)
     K = P_est * C' / (C * P_est * C' + R);    % Kalman Gain
-    X_est = X_est + K * (radar_measurements(k) - C * X_est); % Corrected state
-    P_est = (eye(2) - K * C) * P_est;          % Corrected covariance
+    X_est = X_est + K * (z(k) - C * X_est);   % Corrected state
+    P_est = (eye(2) - K * C) * P_est;         % Corrected covariance
 
     % Store corrected estimate
     X_estimates(:, k) = X_est;
@@ -111,7 +110,7 @@ end
 % True Position vs. Noisy Measurements
 figure
 plot(t, true_position, 'g-', ...
-     t, radar_measurements, 'rx')
+     t, z, 'rx')
 
 legend('True Position', 'Radar Measurements', 'location', 'northwest');
 xlabel('Time (s)');
@@ -133,7 +132,7 @@ grid on;
 % Kalman Filters vs. True Position vs. Noisy Measurements
 figure;
 plot(t, true_position, 'g-', ...
-     t, radar_measurements, 'rx', ...
+     t, z, 'rx', ...
      t, X_estimates(1,:), 'b--', ...
      t, x_kalmf_estimates(:,1), 'm-.', 'LineWidth', 1.5);
 legend('True Position', 'Radar Measurements', 'Manual Kalman Filter Estimate', 'MATLAB kalmf Estimate', 'location', 'northwest');
