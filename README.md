@@ -4,7 +4,7 @@ This project implements a radar signal filtering and tracking system designed to
 Note: Original instructions wanted you to download 'RadarTracker.m'. This version is still valid, but is less clean than the one recommended below!
 
 # Steps for Running the Script
-Please download the `RadarTracker_Pos.mlx` file under "Project Items"
+Please download the `RadarTracker_Pos.mlx` file under "Project Items". Click `view raw` to initiate the download.
 
 1. Open `RadarTracker_Pos.mlx` in MATLAB
    
