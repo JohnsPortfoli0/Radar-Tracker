@@ -1,14 +1,17 @@
 %% Title: Graduate Project 2 (Radar Signal Filtering)
 %
 % * Objective: The objective of this project is to generate a simple linear
-%              equation of motion and have a kalman filter estimate its 
-%              position based on noise measurements. A target is being
+%              motion model and have a kalman filter estimate the true 
+%              position based on noisy measurements. A target is being
 %              tracked traveling at a constant speed of 20 m/s and is
-%              attempting to scramble its position. Through the use of a
-%              kalman filter, the targets position can located based on
-%              estimation. This serves as a fundamental demonstration of
-%              how a kalman filter works to extract the location of its
-%              picked target. 
+%              attempting to scramble its position. Acceleration is not 
+%              accounted for in the is model, however the acceleration 
+%              and deceleration by default contribute to the error 
+%              calculated in the Process Noise (Q matrix). Through the use 
+%              of a kalman filter, the targets position can located based 
+%              on estimation. This serves as a fundamental demonstration of
+%              how a kalman filter works to extract the true positon of the
+%              target represented by the linear motion model.
 %              
 % * Name: John Schatzel
 % 
@@ -20,69 +23,72 @@ clc
 clear all
 
 %% Data Section
-dt = 0.25;                        % sampling interval, smaller dt = better filter tracking
-t = 0:dt:20;                      % timing vector
-initial_position = 0;             % initial position
-velocity = 20;                    % 20 m/s constant velocity
-mn = 50;           % standard deviation of measurement noise
+dt = 0.1;         % sampling interval, smaller dt = better filter tracking
+t = 0:dt:20;       % timing vector
+xi = 0;            % initial position
+v = 20;            % 20 m/s constant velocity
+sigma = 10;        % standard deviation of measurement noise (refer to R for its relation)
 
 %% Target motion equation and noise addition
-% true state (constant velocity motion)
-true_position = initial_position + velocity*t;
+% linear motion model w/ const. velocity (represents true trajectory of
+% target)
+x = xi + v*t;
 
 % simulate radar measurements
-z = true_position + mn*randn(size(t)); % radar measurement vector
+z = x + sigma*randn(size(t)); % radar measurement vector
 
 %% State Space Model Definition
-% define state-space model
+% (2 states, 1 output, no inputs)
 
-% value of '1' indicates that the new position/velocity depends 100% on the old position
-% dt is the position over time
-A = [1 dt; 0 1];                  % state transition matrix (position updated by velocity, velocity constant)
+% State Transition Matrix (n x n)
+% position updated by velocity, velocity constant
+A = [1 dt; 0 1]; % derived from Kinematics                  
 
-% value of '0' indicates there is nothing else controlling the position of
-% the target over time
-B = [0; 0];                       % control input matrix (no external control input)
+% Control Input Matrix (n x m)
+% B = [0; 0]; % no external control input -> [0; 0];
+% although we do not have any control input, we still want to inject 
+% process noise into the position and velocity so that Q may be calculated!
+B = eye(2); % indpendently inject process noise into each state
 
-% this indicates we are only measuring the position over time, not the
-% velocity 
-C = [1 0];                        % measurement matrix
+% State-to-Measurement Matrix (called 'H' for Kalman filtering) (p x n)
+C = [1 0]; % only measuring position                        
 
-% value set to '0' because there is no control input directly being passed
-% to the output
-D = 0;                            % direct transmission or feedthrough matrix
+% Feedthrough Matrix (p x m)
+% D = 0; % input has no instantaneous affect on the measurement
+D = zeros(1,2); % needed for ss model
 
-% value of '1' denotes there is slight disturbance in pos. and velo.
-% higher variance than '1' = more disturbance
-% value of '0' denotes there is no direct from pos. to velo. and vice versa
-% noise covariance matrices
-Q = [1 0; 0 1];               % process noise covariance (uncertainty in model dynamics)
-R = mn^2;                     % measurement noise covariance (uncertainty in sensor measurements)
+% Process Noise Covariance (uncertainty in model dynamics)
+% - smaller Q: motion model is accurate
+% - larger Q: motion model is uncertain (increase predicted uncertainty)
+Q = [1 0; 0 1];
 
-% create state-space system and Kalman filter
-% NOTE: In the simulated system, B = [0; 0] and D = 0 because there is 
-% no true control input.
+% Measurement Noise Covariance (uncertainty in sensor measurements)
+% - smaller R: filter trusts measurements more (believes sensor is accurate)
+% - larger R: filter trusts model more (believes that the sensor is noisy)
+R = sigma^2;
 
-% However, for Kalman filter design, we use B = eye(2) and D = zeros(1,2) 
-% to model process noise entering the position and velocity states 
-% independently.
-sys = ss(A, eye(2), C, zeros(1,2), dt); % define system with separate noise inputs
+% measuring position and velocity
+% pos = (xi + v*t) + sigma*randn(size(t));
+% vel = v*ones(size(t));      % or noisy velocity if available
+% z = [pos(:), vel(:)];       % 201-by-2
 
-%% MATLAB Kalman Filter Command
-[kalmf, L, P] = kalman(sys, Q, R); % MATLAB generated kalman filter, 
+sys = ss(A, B, C, D, dt);
+
+% Creating Kalman Filter from the Built-In 'kalman' Command
+[kalmf, L, P] = kalman(sys, Q, R); % MATLAB generated kalman filter,
 % kalmf = Kalman filter system
 % L = Kalman Gain (NOT DIRECTLY USED)
 % P = Steady-state error covariance
 
 % Simulate kalmf on radar measurements
 [y, time, x_kalmf_estimates] = lsim(kalmf, z, t);
-% y = output (NOT DIRECTLY USED)
+% y = sensor reconstruction reading
 % time = same timing vector as 't'
 % x_kalmf_estimates = internal states at each time step
 
 %% Manual Kalman Filter Implementation
 % Initialize state and covariance
-X_est = [0; 20];        % Initial position and velocity (STATE VECTOR)
+X_est = [0; 20];       % Initial position and velocity (STATE VECTOR)
 P_est = P;             % Initial covariance estimate, used results from built-in filter to make the comparison fair (STATE COVARIANCE)
 
 % Preallocate for storage
@@ -109,7 +115,7 @@ end
 
 % True Position vs. Noisy Measurements
 figure
-plot(t, true_position, 'g-', ...
+plot(t, x, 'g-', ...
      t, z, 'rx')
 
 legend('True Position', 'Radar Measurements', 'location', 'northwest');
@@ -120,7 +126,7 @@ grid on;
 
 % Kalman Filter Plots Against True Position
 figure;
-plot(t, true_position, 'g-', ...
+plot(t, x, 'g-', ...
      t, X_estimates(1,:), 'b--', ...
      t, x_kalmf_estimates(:,1), 'm-.', 'LineWidth', 1.5);
 legend('True Position', 'Manual Kalman Filter Estimate', 'MATLAB Estimate', 'location', 'northwest');
@@ -131,7 +137,7 @@ grid on;
 
 % Kalman Filters vs. True Position vs. Noisy Measurements
 figure;
-plot(t, true_position, 'g-', ...
+plot(t, x, 'g-', ...
      t, z, 'rx', ...
      t, X_estimates(1,:), 'b--', ...
      t, x_kalmf_estimates(:,1), 'm-.', 'LineWidth', 1.5);
@@ -145,7 +151,7 @@ grid on;
 % Extract position estimates
 man_est   = X_estimates(1,:).';        % Manual KF position (Nx1)
 kalmf_est = x_kalmf_estimates(:,1);    % MATLAB kalmf position (Nx1)
-truth     = true_position(:);          % True position (Nx1)
+truth     = x(:);          % True position (Nx1)
 
 % MAPE: Mean Absolute Percentage Error
 % ACC: Accuracy
