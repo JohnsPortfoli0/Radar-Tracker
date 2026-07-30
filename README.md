@@ -13,9 +13,6 @@ Please download the `RadarTracker_Pos.mlx` file under "Project Items". Click `vi
    `Figure 1`: Plots the true position of the target as well as the noisy measurements  
    `Figure 2`: Shows a recursive Kalman filter vs. MATLABs Kalman filter command vs. true position
    `Figure 3`: Shows combination Figure 1 and 2
-   `Figure 4`: Shows true position vs. MATLABs Kalman filter command vs. the output of the MATLAB Kalman filter command (sensor reconstruction reading)
-
-   NOTE: The sensor reconstruction reading is the predicted measurement computed from the estimated states.
 
 # Steps for Running the Simulink Demo
 Please download the `RadarSimulink.slx` file under "Project Items"
