@@ -98,7 +98,7 @@ Please download the `RadarSimulink.slx` file under "Project Items"
   - Offers a clear and practical demonstration of Kalman filtering—great for radar tracking and navigation systems for beginners.
  
 # Requirments
-- MATLAB R2024a (This is what I used)
+- MATLAB R2024a OR Newer (have not tested with anything older than R2024a)
 - Toolboxes
   - Control System Toolbox (e.g., `ss`, `kalman`, `lsim`)
 
