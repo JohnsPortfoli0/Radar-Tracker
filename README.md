@@ -12,6 +12,7 @@ Please download the `RadarTracker_Pos.mlx` file under "Project Items". Click `vi
    
    `Figure 1`: Plots the true position of the target as well as the noisy measurements  
    `Figure 2`: Shows a recursive Kalman filter vs. MATLABs Kalman filter command vs. true position
+   
    `Figure 3`: Shows combination Figure 1 and 2
 
 # Steps for Running the Simulink Demo
